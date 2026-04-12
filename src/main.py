@@ -1,9 +1,10 @@
 from arg_parser import parse_arguments
+from settings import load_settings
 from pathlib import Path
 
 def main():
     # --- load config ---
-    # settings = load_settings()
+    settings = load_settings()
     print("[settings] Config loaded.")
 
     args = parse_arguments()
