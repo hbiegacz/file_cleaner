@@ -50,10 +50,10 @@ echo "backup file"   > "$Y1/docs/old/archived/notes.bak"
 # ---------------------------------------------------------------
 # CASE 6: suspicious characters in filenames
 # ---------------------------------------------------------------
-echo "fake jpg content" > "$BASE/photos/my photo 2024.jpg"
-echo "fake pdf content" > "$BASE/photos/scan;final.pdf"
-echo "fake jpg content" > "$Y1/media/photos/holiday photo #1.jpg"
-echo "fake txt content" > "$Y2/super/deep/dir/structure/file with spaces & symbols.txt"
+echo "fake jpg content 1" > "$BASE/photos/my photo 2024.jpg"
+echo "fake pdf content"   > "$BASE/photos/scan;final.pdf"
+echo "fake jpg content 2" > "$Y1/media/photos/holiday photo #1.jpg"
+echo "fake txt content"   > "$Y2/super/deep/dir/structure/file with spaces & symbols.txt"
 
 # ---------------------------------------------------------------
 # CASE 7: bad permissions
