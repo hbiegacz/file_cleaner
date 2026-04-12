@@ -67,38 +67,14 @@ def resolve_name_conflict(groups: dict[str, list[Path]], strategy: str, dry_run:
             print(f"[WARN] Could not sort conflict group '{name}': {e}")
             continue
 
-        newest = sorted_paths[0]
-        others = sorted_paths[1:]
+        keep = sorted_paths[0] if strategy == "newest" else sorted_paths[-1]
+        to_delete = [p for p in sorted_paths if p != keep]
 
-        print(f"\n[INFO] Conflict '{name}' — keeping newest: {newest}")
-        for p in others:
-            print(f"       older: {p}")
+        print(f"[INFO] Conflict '{name}' — keeping {strategy}: {keep}")
+        for p in to_delete:
+            print(f"       removing: {p}")
 
-        policy = input("Remove older files? [(a)ll / (s)ome / (N)one]: ").strip().lower()
-
-        if policy == "a":
-            delete_files(others, dry_run)
-        elif policy == "s":
-            _ask_per_file(others, dry_run)
-
-
-def skip_file(files: list[Path]) -> None:
-    for path in files:
-        print(f"[INFO] Skipped (no action): '{path}'")
-
-
-def apply_batch_policy(files: list[Path], policy: str, dry_run: bool, **kwargs) -> None:
-    actions = {
-        "delete": lambda: delete_files(files, dry_run),
-        "skip":   lambda: skip_file(files),
-        "copy":   lambda: copy_missing_to_base(files, kwargs["source_roots"], kwargs["base"], dry_run),
-        "move":   lambda: move_file_to_base(files, kwargs["source_roots"], kwargs["base"], dry_run),
-    }
-    action = actions.get(policy)
-    if action is None:
-        print(f"[ERROR] Unknown batch policy '{policy}', skipping.")
-        return
-    action()
+        delete_files(to_delete, dry_run)
 
 
 # --- helpers ---
@@ -140,10 +116,3 @@ def _resolve_target(path: Path, source_roots: list[Path], base: Path) -> Path | 
 
 def _sanitize_name(name: str, char_set: set[str], substitute: str) -> str:
     return "".join(substitute if c in char_set else c for c in name)
-
-
-def _ask_per_file(files: list[Path], dry_run: bool) -> None:
-    for path in files:
-        answer = input(f"  Remove '{path}'? [y/N]: ").strip().lower()
-        if answer == "y":
-            delete_files([path], dry_run)
