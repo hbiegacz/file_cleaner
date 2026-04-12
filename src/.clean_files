@@ -1,4 +1,6 @@
 {
+  "KEEP_DUPLICATE_STRATEGY": "oldest",
+  "KEEP_SAME_NAME_STRATEGY": "newest",
   "TARGET_PERMISSIONS": "rw-r--r--",
   "SUSPICIOUS_CHARS": [
     " ",
@@ -20,8 +22,6 @@
     "*~",
     "*.bak"
   ],
-  "DRY_RUN": true,
-  "KEEP_DUPLICATE_STRATEGY": "oldest",
   "IGNORED_DIRS": [
     ".git",
     "__pycache__",

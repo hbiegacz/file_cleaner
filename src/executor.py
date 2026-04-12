@@ -59,7 +59,7 @@ def resolve_duplicates(groups: dict[str, list[Path]], strategy: str, dry_run: bo
         delete_files(to_delete, dry_run)
 
 
-def resolve_name_conflict(groups: dict[str, list[Path]], dry_run: bool) -> None:
+def resolve_name_conflict(groups: dict[str, list[Path]], strategy: str, dry_run: bool) -> None:
     for name, paths in groups.items():
         try:
             sorted_paths = sorted(paths, key=lambda p: p.stat().st_mtime, reverse=True)

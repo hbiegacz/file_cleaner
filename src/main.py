@@ -36,7 +36,7 @@ def main():
     if args.all or args.resolve_conflicts:
         print("\n\n[RESOLVE NAME CONFLICTS]")
         conflicts = find_name_conflicts(files)
-        resolve_name_conflict(conflicts, args.dry_run)
+        resolve_name_conflict(conflicts, settings["KEEP_SAME_NAME_STRATEGY"], args.dry_run)
 
     if args.all or args.fix_permissions:
         print("\n\n[FIX PERMISSIONS]")

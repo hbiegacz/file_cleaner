@@ -10,8 +10,8 @@ DEFAULTS = {
     "SUSPICIOUS_CHARS":           [" ", "'", '"', ",", ";", "*", "?", "$", "#", "&", "|", "\\"],
     "SUSPICIOUS_CHAR_SUBSTITUTE": "_",
     "TEMP_FILE_PATTERNS":         ["*.tmp", "*~", "*.bak"],
-    "DRY_RUN":                    True,
     "KEEP_DUPLICATE_STRATEGY":    "oldest",
+    "KEEP_SAME_NAME_STRATEGY":    "newest",
     "IGNORED_DIRS":               [".git", "__pycache__", ".DS_Store", "node_modules", ".idea"],
 }
 
@@ -20,8 +20,8 @@ _EXPECTED_TYPES = {
     "SUSPICIOUS_CHARS":           list,
     "SUSPICIOUS_CHAR_SUBSTITUTE": str,
     "TEMP_FILE_PATTERNS":         list,
-    "DRY_RUN":                    bool,
     "KEEP_DUPLICATE_STRATEGY":    str,
+    "KEEP_SAME_NAME_STRATEGY":    str,
     "IGNORED_DIRS":               list,
 }
 
