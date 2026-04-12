@@ -37,12 +37,13 @@ def load_settings() -> dict:
 
     for key, value in data.items():
         if key not in DEFAULTS:
-            print(f"[settings] Warning: unknown config key '{key}', skipping.")
+            print(f"[WARN] Unknown config key '{key}', skipping.")
             continue
 
         _validate_entry(key, value)
         settings[key] = value
 
+    print("[OK] Config loaded.")
     return settings
 
 def _read_config_file() -> dict:
@@ -50,24 +51,18 @@ def _read_config_file() -> dict:
         with CONFIG_FILE.open(encoding="utf-8") as f:
             return json.load(f)
     except json.JSONDecodeError as e:
-        raise RuntimeError(f"Config file {CONFIG_FILE} is not valid JSON: {e}")
+        raise RuntimeError(f"[ERROR] Config file {CONFIG_FILE} is not valid JSON: {e}")
     except OSError as e:
-        raise RuntimeError(f"Could not read config file {CONFIG_FILE}: {e}")
+        raise RuntimeError(f"[ERROR] Could not read config file {CONFIG_FILE}: {e}")
 
 
 def _validate_entry(key: str, value) -> None:
     expected_type = _EXPECTED_TYPES[key]
     if not isinstance(value, expected_type):
-        raise ValueError(
-            f"Config key '{key}' must be of type {expected_type.__name__}, "
-            f"got {type(value).__name__}."
-        )
+        raise ValueError(f"[ERROR] Config key '{key}' must be of type {expected_type.__name__}, got {type(value).__name__}.")
 
     if key == "KEEP_DUPLICATE_STRATEGY" and value not in _VALID_DUPLICATE_STRATEGIES:
-        raise ValueError(
-            f"KEEP_DUPLICATE_STRATEGY must be one of {_VALID_DUPLICATE_STRATEGIES}, "
-            f"got '{value}'."
-        )
+        raise ValueError(f"[ERROR] KEEP_DUPLICATE_STRATEGY must be one of {_VALID_DUPLICATE_STRATEGIES}, got '{value}'.")
 
 def parse_permissions(rwx: str) -> int:
     values = {"r": 4, "w": 2, "x": 1, "-": 0}
