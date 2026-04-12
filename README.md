@@ -32,13 +32,13 @@ python src/main.py -b <BASE> <SOURCE> [SOURCE ...] [options]
 
 ```bash
 # preview all checks without changing anything
-python src/main.py -B ~/documents ~/backup1 ~/backup2 --all --dry-run
+python src/main.py -b ~/documents ~/backup1 ~/backup2 --all --dry-run
 
 # remove duplicates and empty files
-python src/main.py -B ~/documents ~/backup1 --remove-duplicates --remove-empty --warnings
+python src/main.py -b ~/documents ~/backup1 --remove-duplicates --remove-empty --warnings
 
 # copy missing files and fix permissions
-python src/main.py -B ~/documents ~/backup1 ~/backup2 -c -p 
+python src/main.py -b ~/documents ~/backup1 ~/backup2 -c -p 
 ```
 
 ## Configuration
@@ -63,6 +63,6 @@ If the file does not exist, defaults are used.
 To generate a set of test directories covering all supported cases:
 
 ```bash
-bash create_test_data.sh
-python src/main.py -B test_data/base test_data/source1 test_data/source2 --all --dry-run
+bash create_test_dirs.sh
+python src/main.py -b test_data/base test_data/source1 test_data/source2 --all --dry-run
 ```
