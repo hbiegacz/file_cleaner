@@ -6,9 +6,9 @@ from inspector import *
 from executor import *
 
 def main():
+    args = parse_arguments()
     settings = load_settings()
 
-    args = parse_arguments()
     base = Path(args.base)
     sources = [Path(s) for s in args.sources]
 
