@@ -68,3 +68,8 @@ def _validate_entry(key: str, value) -> None:
             f"KEEP_DUPLICATE_STRATEGY must be one of {_VALID_DUPLICATE_STRATEGIES}, "
             f"got '{value}'."
         )
+
+def parse_permissions(rwx: str) -> int:
+    values = {"r": 4, "w": 2, "x": 1, "-": 0}
+    groups = [sum(values[c] for c in rwx[i:i+3]) for i in range(0, 9, 3)]
+    return (groups[0] << 6) | (groups[1] << 3) | groups[2]
