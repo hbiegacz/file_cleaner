@@ -1,3 +1,4 @@
+from scanner import build_file_index, scan_directories
 from arg_parser import parse_arguments
 from settings import load_settings
 from pathlib import Path
@@ -16,7 +17,10 @@ def main():
         print("\n[dry-run] No changes will be applied.")
 
     # --- scan ---
-    # files = build_file_index(scan_directories([base] + sources, args.warnings))
+    files = build_file_index(
+        scan_directories([base] + sources, settings["IGNORED_DIRS"], args.warnings),
+        args.warnings
+    )
     print(f"\n[scanner] Scanning base: {base} and sources: {sources}")
 
     # --- inspect & execute ---
