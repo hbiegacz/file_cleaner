@@ -6,7 +6,7 @@ from pathlib import Path
 def main():
     # --- load config ---
     settings = load_settings()
-    print("[settings] Config loaded.")
+    print("Config loaded.")
 
     args = parse_arguments()
     base = Path(args.base)
@@ -21,8 +21,7 @@ def main():
         scan_directories([base] + sources, settings["IGNORED_DIRS"], args.warnings),
         args.warnings
     )
-    print(f"\n[scanner] Scanning base: {base} and sources: {sources}")
-
+    print(f"\nScanning base: {base} and sources: {sources}")
     # --- inspect & execute ---
 
     if args.all or args.remove_empty:
@@ -73,7 +72,7 @@ def main():
         print("\n[inspector] Looking for files missing from base...")
         print("[executor]  Moving missing files to base...")
 
-    print("\n[done] All tasks completed.")
+    print("\nAll tasks completed.")
 
 
 if __name__ == "__main__":
