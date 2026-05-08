@@ -55,5 +55,11 @@ def _has_suspicious_chars(filename: str, char_set: set[str]) -> bool:
     return any(char in filename for char in char_set)
 
 
-def _is_in_sources(path: Path, sources: list[Path]) -> bool:
-    return any(path.is_relative_to(source) for source in sources)
+    return any(_is_relative_to(path, source) for source in sources)
+
+def _is_relative_to(path: Path, other: Path) -> bool:
+    try:
+        path.relative_to(other)
+        return True
+    except ValueError:
+        return False
