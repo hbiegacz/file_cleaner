@@ -71,4 +71,5 @@ echo "nested duplicate" > "$Y2/super/deep/dir/structure/config.cfg"
 
 echo ""
 echo "Done. Test structure:"
-tree test_data
+# tree test_data
+ls test_data --recursive
