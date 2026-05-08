@@ -1,9 +1,10 @@
 import hashlib
 import stat
 from pathlib import Path
+from typing import List, Dict, Union, Optional
 
 
-def scan_directories(directories: list[Path], ignored_dirs: list[str], warnings: bool) -> list[Path]:
+def scan_directories(directories: List[Path], ignored_dirs: List[str], warnings: bool) -> List[Path]:
     files = []
     for directory in directories:
         if not directory.exists():
@@ -14,7 +15,7 @@ def scan_directories(directories: list[Path], ignored_dirs: list[str], warnings:
     return files
 
 
-def compute_file_hash(path: Path, warnings: bool, chunk_size: int = 4096) -> str | None:
+def compute_file_hash(path: Path, warnings: bool, chunk_size: int = 4096) -> Optional[str]:
     hasher = hashlib.sha256()
     try:
         with path.open("rb") as f:
@@ -27,7 +28,7 @@ def compute_file_hash(path: Path, warnings: bool, chunk_size: int = 4096) -> str
         return None
 
 
-def build_file_index(files: list[Path], warnings: bool) -> dict[Path, dict]:
+def build_file_index(files: List[Path], warnings: bool) -> Dict[Path, dict]:
     index = {}
     for path in files:
         entry = _get_file_metadata(path, warnings)
@@ -38,7 +39,7 @@ def build_file_index(files: list[Path], warnings: bool) -> dict[Path, dict]:
 
 # --- helpers ---
 
-def _collect_files(directory: Path, ignored_dirs: list[str], warnings: bool) -> list[Path]:
+def _collect_files(directory: Path, ignored_dirs: List[str], warnings: bool) -> List[Path]:
     files = []
     for path in directory.rglob("*"):
         if _is_ignored(path, ignored_dirs):
@@ -48,11 +49,11 @@ def _collect_files(directory: Path, ignored_dirs: list[str], warnings: bool) -> 
     return files
 
 
-def _is_ignored(path: Path, ignored_dirs: list[str]) -> bool:
+def _is_ignored(path: Path, ignored_dirs: List[str]) -> bool:
     return any(part in ignored_dirs for part in path.parts)
 
 
-def _get_file_metadata(path: Path, warnings: bool) -> dict | None:
+def _get_file_metadata(path: Path, warnings: bool) -> Optional[dict]:
     try:
         file_stat = path.stat()
         return {

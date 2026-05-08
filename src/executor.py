@@ -1,13 +1,14 @@
 import shutil
 from pathlib import Path
+from typing import List, Dict, Set, Optional
 
 
-def delete_files(files: list[Path], dry_run: bool) -> None:
+def delete_files(files: List[Path], dry_run: bool) -> None:
     for path in files:
         _execute(path, "delete", dry_run, _delete_file)
 
 
-def copy_missing_to_base(missing: list[Path], source_roots: list[Path], base: Path, dry_run: bool) -> None:
+def copy_missing_to_base(missing: List[Path], source_roots: List[Path], base: Path, dry_run: bool) -> None:
     for path in missing:
         target = _resolve_target(path, source_roots, base)
         if target is None:
@@ -16,7 +17,7 @@ def copy_missing_to_base(missing: list[Path], source_roots: list[Path], base: Pa
         _execute(path, f"copy → {target}", dry_run, lambda p, t=target: _copy_file(p, t))
 
 
-def move_file_to_base(missing: list[Path], source_roots: list[Path], base: Path, dry_run: bool) -> None:
+def move_file_to_base(missing: List[Path], source_roots: List[Path], base: Path, dry_run: bool) -> None:
     for path in missing:
         target = _resolve_target(path, source_roots, base)
         if target is None:
@@ -25,7 +26,7 @@ def move_file_to_base(missing: list[Path], source_roots: list[Path], base: Path,
         _execute(path, f"move → {target}", dry_run, lambda p, t=target: _move_file(p, t))
 
 
-def rename_file(files: list[Path], suspicious_chars: list[str], substitute: str, dry_run: bool) -> None:
+def rename_file(files: List[Path], suspicious_chars: List[str], substitute: str, dry_run: bool) -> None:
     char_set = set(suspicious_chars)
     for path in files:
         new_name = _sanitize_name(path.name, char_set, substitute)
@@ -38,13 +39,13 @@ def rename_file(files: list[Path], suspicious_chars: list[str], substitute: str,
         _execute(path, f"rename → {new_name}", dry_run, lambda p, t=new_path: p.rename(t))
 
 
-def fix_permissions(files: list[Path], target_permissions: int, dry_run: bool) -> None:
+def fix_permissions(files: List[Path], target_permissions: int, dry_run: bool) -> None:
     for path in files:
         _execute(path, f"chmod → {oct(target_permissions)}", dry_run,
                  lambda p, perms=target_permissions: p.chmod(perms))
 
 
-def resolve_duplicates(groups: dict[str, list[Path]], strategy: str, dry_run: bool) -> None:
+def resolve_duplicates(groups: Dict[str, List[Path]], strategy: str, dry_run: bool) -> None:
     for file_hash, paths in groups.items():
         try:
             sorted_paths = sorted(paths, key=lambda p: p.stat().st_mtime)
@@ -59,7 +60,7 @@ def resolve_duplicates(groups: dict[str, list[Path]], strategy: str, dry_run: bo
         delete_files(to_delete, dry_run)
 
 
-def resolve_name_conflict(groups: dict[str, list[Path]], strategy: str, dry_run: bool) -> None:
+def resolve_name_conflict(groups: Dict[str, List[Path]], strategy: str, dry_run: bool) -> None:
     for name, paths in groups.items():
         try:
             sorted_paths = sorted(paths, key=lambda p: p.stat().st_mtime, reverse=True)
@@ -104,7 +105,7 @@ def _move_file(source: Path, target: Path) -> None:
     shutil.move(str(source), target)
 
 
-def _resolve_target(path: Path, source_roots: list[Path], base: Path) -> Path | None:
+def _resolve_target(path: Path, source_roots: List[Path], base: Path) -> Optional[Path]:
     for root in source_roots:
         try:
             relative = path.relative_to(root)
@@ -114,5 +115,5 @@ def _resolve_target(path: Path, source_roots: list[Path], base: Path) -> Path | 
     return None
 
 
-def _sanitize_name(name: str, char_set: set[str], substitute: str) -> str:
+def _sanitize_name(name: str, char_set: Set[str], substitute: str) -> str:
     return "".join(substitute if c in char_set else c for c in name)
