@@ -1,93 +1,88 @@
 import argparse
 
-
 def parse_arguments():
     parser = argparse.ArgumentParser(
         description=(
-            "File Cleaner." +
-            "Scans multiple directories to find duplicates, missing files, "
-            "empty/temporary files, name conflicts and permission issues, then cleans them up."
+            "File Cleaner - A tool to scan and clean up directory structures.\n"
+            "Finds duplicates, missing files, empty/temporary files, and fixes permissions/names."
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
 
-    parser.add_argument(
+    # Core path arguments
+    group_paths = parser.add_argument_group("Path arguments")
+    group_paths.add_argument(
         "-b", "--base",
         metavar="BASE",
         required=True,
-        help="The main directory where all files should end up. "
-             "Missing files from SOURCE directories will be copied here."
+        help="The primary directory (destination for missing files)."
     )
-    parser.add_argument(
+    group_paths.add_argument(
         "sources",
         nargs="+",
         metavar="SOURCE",
-        help="One or more directories to scan alongside BASE. "
-             "These are treated as backup or secondary locations."
-    )
-    parser.add_argument(
-        "-dr", "--dry-run",
-        action="store_true",
-        help="Show what would be done without making any actual changes. "
-             "Safe to run at any time."
-    )
-    parser.add_argument(
-        "-w", "--warnings",
-        action="store_true",
-        help="Print warnings when a file or directory cannot be accessed."
+        help="One or more source/backup directories to scan."
     )
 
-    parser.add_argument(
+    # Execution control
+    group_ctrl = parser.add_argument_group("Execution control")
+    group_ctrl.add_argument(
+        "-dr", "--dry-run",
+        action="store_true",
+        help="Show what would be done without making changes."
+    )
+    group_ctrl.add_argument(
+        "-w", "--warnings",
+        action="store_true",
+        help="Enable detailed warning messages for inaccessible files."
+    )
+
+    # Action flags
+    group_actions = parser.add_argument_group("Cleanup actions")
+    group_actions.add_argument(
         "-a", "--all",
         action="store_true",
-        help="Run all available checks and apply their actions."
+        help="Run all available checks."
     )
-    parser.add_argument(
+    group_actions.add_argument(
         "-d", "--remove-duplicates",
         action="store_true",
-        help="Find files with identical content (regardless of name or location) "
-             "and remove all copies except the oldest one."
+        help="Remove identical files (keeps oldest)."
     )
-    parser.add_argument(
+    group_actions.add_argument(
         "-e", "--remove-empty",
         action="store_true",
-        help="Find and delete files that are completely empty (0 bytes)."
+        help="Delete empty (0-byte) files."
     )
-    parser.add_argument(
+    group_actions.add_argument(
         "-t", "--remove-temporary",
         action="store_true",
-        help="Find and delete temporary files such as *.tmp, *~ and *.bak. "
-             "Patterns can be changed in the config file."
+        help="Delete temporary files based on patterns in config."
     )
-    parser.add_argument(
+    group_actions.add_argument(
         "-c", "--copy-missing",
         action="store_true",
-        help="Copy files that exist in SOURCE directories but are missing from BASE."
+        help="Copy missing files from SOURCE to BASE."
     )
-    parser.add_argument(
+    group_actions.add_argument(
         "-m", "--move-missing",
         action="store_true",
-        help="Move files that exist in SOURCE directories but are missing from BASE. "
-             "Unlike --copy-missing, the original file is removed after moving."
+        help="Move missing files from SOURCE to BASE (removes source)."
     )
-    parser.add_argument(
+    group_actions.add_argument(
         "-r", "--resolve-conflicts",
         action="store_true",
-        help="Find files with the same name in different locations "
-             "and interactively decide which ones to keep."
+        help="Resolve name conflicts between different locations."
     )
-    parser.add_argument(
+    group_actions.add_argument(
         "-p", "--fix-permissions",
         action="store_true",
-        help="Find files whose permissions differ from the expected value "
-             "and update them. The target permissions are set in the config file."
+        help="Sync file permissions with the target value in config."
     )
-    parser.add_argument(
+    group_actions.add_argument(
         "-s", "--fix-suspicious-names",
         action="store_true",
-        help="Rename files whose names contain characters that may cause issues "
-             "in the shell (e.g. spaces, quotes, semicolons). "
-             "Problematic characters are replaced with a substitute defined in the config file."
+        help="Rename files with shell-unsafe characters."
     )
 
     return parser.parse_args()
