@@ -1,3 +1,5 @@
+''' This file contains functions to PERFORM file OPERATIONS like delete, copy, move, rename or fix permissions.'''
+
 import shutil
 import logging
 from pathlib import Path

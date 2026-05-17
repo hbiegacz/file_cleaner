@@ -1,3 +1,5 @@
+''' This file DEFINES the command-line ARGUMENTS and options for the program.'''
+
 import argparse
 
 def parse_arguments():

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+''' This file LOADS and manages the CONFIGURATION settings for the program. '''
 
 import json
 import logging
@@ -66,6 +66,7 @@ def load_settings() -> Dict[str, Any]:
 
     return settings
 
+# helpers
 
 def _read_config_file() -> Dict[str, Any]:
     with CONFIG_FILE.open(encoding="utf-8") as f:

@@ -1,3 +1,5 @@
+''' This file SCANS DIRECTORIES and collects information about the files inside them.'''
+
 import hashlib
 import stat
 import logging
@@ -46,11 +48,11 @@ def scan_directories(directories: List[Path], ignored_dirs: List[str], warnings:
         files.extend(_collect_files_efficiently(directory, ignored_set, warnings))
     return files
 
+# helpers
 
 def _collect_files_efficiently(root: Path, ignored_dirs: set, warnings: bool) -> List[FileInfo]:
     collected = []
     for dirpath, dirnames, filenames in os.walk(root):
-        # Prune ignored directories in-place to prevent os.walk from visiting them
         dirnames[:] = [d for d in dirnames if d not in ignored_dirs]
         
         for f in filenames:

@@ -3,6 +3,8 @@
 Narzędzie wiersza poleceń do organizowania dużych kolekcji plików rozproszonych w wielu katalogach.
 Znajduje duplikaty, brakujące pliki, puste/tymczasowe pliki, konflikty nazw oraz problemy z uprawnieniami,  a następnie sugeruje lub stosuje odpowiednią poprawkę.
 
+# Testowane na komputerze laboratoryjnym z pythonem 3.8.10
+
 ## Użycie
 
 ```bash

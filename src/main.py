@@ -1,3 +1,5 @@
+''' This is the main file that COORDINATES the scanning, inspecting and executing processes.'''
+
 import logging
 import sys
 from pathlib import Path

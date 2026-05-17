@@ -1,3 +1,5 @@
+''' This file provides logic to FIND duplicates, empty files, conflicts and bad permissions.'''
+
 import fnmatch
 from pathlib import Path
 from typing import List, Dict, Set, Optional
@@ -7,7 +9,7 @@ from scanner import FileInfo
 def find_duplicates(files: List[FileInfo]) -> Dict[str, List[Path]]:
     hash_map: Dict[str, List[Path]] = {}
     for info in files:
-        file_hash = info.hash  # This triggers lazy computation if needed
+        file_hash = info.hash  
         if file_hash is None:
             continue
         hash_map.setdefault(file_hash, []).append(info.path)
