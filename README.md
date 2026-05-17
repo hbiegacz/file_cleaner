@@ -1,7 +1,8 @@
 # File Cleaner
 
 A command-line tool for organizing large file collections spread across multiple directories.
-Finds duplicates, missing files, empty/temporary files, name conflicts and permission issues — then suggests or applies the appropriate fix.
+Finds duplicates, missing files, empty/temporary files, name conflicts and permission issues - then suggests or applies the appropriate fix.
+Project created for the course _Administrowanie Systemem UNIX i siecią TCP/IP_ (ASU).
 
 ## Usage
 
