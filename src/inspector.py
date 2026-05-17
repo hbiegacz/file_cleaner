@@ -33,6 +33,8 @@ def find_name_conflicts(files: List[FileInfo]) -> Dict[str, List[Path]]:
 
 
 def find_bad_permissions(files: List[FileInfo], target_permissions: int) -> List[Path]:
+    return [info.path for info in files if info.permissions != target_permissions]
+
     return [
         info.path for info in files
         if info.permissions != target_permissions

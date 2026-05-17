@@ -13,12 +13,17 @@ DEFAULTS = {
     "TARGET_PERMISSIONS":         "rw-r--r--",
     "SUSPICIOUS_CHARS":           [" ", "'", '"', ",", ";", "*", "?", "$", "#", "&", "|", "\\"],
     "SUSPICIOUS_CHAR_SUBSTITUTE": "_",
-    "TEMP_FILE_PATTERNS":         ["*.tmp", "*~", "*.bak"],
-    "KEEP_DUPLICATE_STRATEGY":    "oldest",
-    "KEEP_SAME_NAME_STRATEGY":    "newest",
-    "IGNORED_DIRS":               [
-        ".git", "__pycache__", ".DS_Store", "node_modules", ".idea", ".vscode", 
-        ".venv", "venv", "env", "Python-3.8.10"
+    "IGNORED_DIRS": [
+        ".git",
+        "__pycache__",
+        ".DS_Store",
+        "node_modules",
+        ".idea",
+        ".vscode",
+        ".venv",
+        "venv",
+        "env",
+        "Python-3.8.10",
     ],
 }
 
