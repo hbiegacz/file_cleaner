@@ -1,4 +1,5 @@
 # File Cleaner
+![Bash](https://img.shields.io/badge/gnu-bash-00000?style=for-the-badge&logo=gnubash&logoSize=auto) ![Python](https://img.shields.io/badge/python-00000?style=for-the-badge&logo=python&logoSize=auto&labelColor=gold&color=gold)
 
 A command-line tool for organizing large file collections spread across multiple directories.
 Finds duplicates, missing files, empty/temporary files, name conflicts and permission issues - then suggests or applies the appropriate fix.
