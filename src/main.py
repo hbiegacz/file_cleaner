@@ -29,7 +29,7 @@ def main():
     logging.info(f"Found {len(files)} files total.")
 
     if not files:
-        logging.info("No files found to process. Check if the directories exist and are not empty.")
+        logging.info("[WARN] No files found to process. Check if the directories exist and are not empty.")
         return
 
     if args.all or args.remove_empty:

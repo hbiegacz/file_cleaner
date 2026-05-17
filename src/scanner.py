@@ -32,7 +32,7 @@ class FileInfo:
             return hasher.hexdigest()
         except OSError:
             if self.warnings:
-                logger.warning(f"Could not read '{self.path}', skipping hash.")
+                logger.warning(f"[WARN] Could not read '{self.path}', skipping hash.")
             return None
 
 
@@ -41,7 +41,7 @@ def scan_directories(directories: List[Path], ignored_dirs: List[str], warnings:
     ignored_set = set(ignored_dirs)
     for directory in directories:
         if not directory.exists():
-            logger.warning(f"Directory '{directory}' does not exist, skipping.")
+            logger.warning(f"[WARN] Directory '{directory}' does not exist, skipping.")
             continue
         files.extend(_collect_files_efficiently(directory, ignored_set, warnings))
     return files
@@ -73,5 +73,5 @@ def _get_file_info(path: Path, warnings: bool) -> Optional[FileInfo]:
         )
     except OSError:
         if warnings:
-            logger.warning(f"Could not stat '{path}', skipping.")
+            logger.warning(f"[WARN] Could not stat '{path}', skipping.")
         return None

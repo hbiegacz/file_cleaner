@@ -16,7 +16,7 @@ def copy_missing_to_base(missing: List[Path], source_roots: List[Path], base: Pa
         if target:
             _execute(path, f"copy -> {target}", dry_run, lambda p, t=target: _copy_file(p, t))
         else:
-            logger.warning(f"Could not resolve target path for '{path}', skipping.")
+            logger.warning(f"[WARN] Could not resolve target path for '{path}', skipping.")
 
 
 def move_file_to_base(missing: List[Path], source_roots: List[Path], base: Path, dry_run: bool) -> None:
@@ -25,7 +25,7 @@ def move_file_to_base(missing: List[Path], source_roots: List[Path], base: Path,
         if target:
             _execute(path, f"move -> {target}", dry_run, lambda p, t=target: _move_file(p, t))
         else:
-            logger.warning(f"Could not resolve target path for '{path}', skipping.")
+            logger.warning(f"[WARN] Could not resolve target path for '{path}', skipping.")
 
 
 def rename_file(files: List[Path], suspicious_chars: List[str], substitute: str, dry_run: bool) -> None:
@@ -36,7 +36,7 @@ def rename_file(files: List[Path], suspicious_chars: List[str], substitute: str,
         if new_path == path:
             continue
         if new_path.exists():
-            logger.warning(f"Skipped rename '{path.name}' -> '{new_name}': target already exists.")
+            logger.warning(f"[WARN] Skipped rename '{path.name}' -> '{new_name}': target already exists.")
             continue
         _execute(path, f"rename -> {new_name}", dry_run, lambda p, t=new_path: p.rename(t))
 
@@ -56,7 +56,7 @@ def resolve_conflicts(groups: Dict[str, List[Path]], strategy: str, dry_run: boo
             reverse = (strategy == "newest")
             sorted_paths = sorted(paths, key=lambda p: p.stat().st_mtime, reverse=reverse)
         except OSError as e:
-            logger.error(f"Could not sort {label} group '{key}': {e}")
+            logger.error(f"[ERROR] Could not sort {label} group '{key}': {e}")
             continue
 
         keep = sorted_paths[0]
@@ -79,7 +79,7 @@ def _execute(path: Path, action_label: str, dry_run: bool, action: Callable[[Pat
         action(path)
         logger.info(f"[OK] {action_label}: '{path}'")
     except OSError as e:
-        logger.error(f"Could not execute on '{path}': {e}")
+        logger.error(f"[ERROR] Could not execute on '{path}': {e}")
 
 
 def _copy_file(source: Path, target: Path) -> None:

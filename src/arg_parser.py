@@ -10,7 +10,7 @@ def parse_arguments():
     )
 
     # Core path arguments
-    group_paths = parser.add_argument_group("Path arguments")
+    group_paths = parser.add_argument_group("File path arguments")
     group_paths.add_argument(
         "-b", "--base",
         metavar="BASE",
@@ -34,7 +34,7 @@ def parse_arguments():
     group_ctrl.add_argument(
         "-w", "--warnings",
         action="store_true",
-        help="Enable detailed warning messages for inaccessible files."
+        help="Enable more detailed warning messages."
     )
 
     # Action flags

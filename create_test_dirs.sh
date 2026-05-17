@@ -23,15 +23,15 @@ echo "duplicate content" > "$Y2/backup/report_backup.txt"
 # missing files — present in Y1/Y2 but not in X
 # ---------------------------------------------------------------
 echo "only in source1"   > "$Y1/docs/only_in_source1.txt"
-echo "deep nested file"  > "$Y2/super/deep/dir/structure/deep_file.txt"
-echo "another missing"   > "$Y2/backup/another_missing.txt"
+echo "deep nested file only in source2"  > "$Y2/super/deep/dir/structure/deep_file.txt"
+echo "another missing only in source2"   > "$Y2/backup/another_missing.txt"
 
 # ---------------------------------------------------------------
 # name conflict — same filename, different content/location
 # ---------------------------------------------------------------
-echo "older version" > "$BASE/documents/notes.txt"
+echo "duplicate name - older version" > "$BASE/documents/notes.txt"
 sleep 1
-echo "newer version" > "$Y1/docs/old/notes.txt"
+echo "duplicate name - newer version" > "$Y1/docs/old/notes.txt"
 
 # ---------------------------------------------------------------
 # empty files
@@ -42,9 +42,9 @@ touch "$Y1/docs/also_empty.txt"
 # ---------------------------------------------------------------
 # temporary files
 # ---------------------------------------------------------------
-echo "tmp content"   > "$BASE/misc/session.tmp"
-echo "vim swap"      > "$BASE/documents/report.txt~"
-echo "backup file"   > "$Y1/docs/old/archived/notes.bak"
+echo "temp content"   > "$BASE/misc/session.tmp"
+echo "temp vim swap"      > "$BASE/documents/report.txt~"
+echo "temp backup file"   > "$Y1/docs/old/archived/notes.bak"
 
 # ---------------------------------------------------------------
 # suspicious characters in filenames
@@ -57,19 +57,21 @@ echo "fake txt content"   > "$Y2/super/deep/dir/structure/file with spaces & sym
 # ---------------------------------------------------------------
 # bad permissions
 # ---------------------------------------------------------------
-echo "wrong perms"      > "$BASE/misc/restricted.txt"
+echo "wrong permsissions"      > "$BASE/misc/restricted.txt"
 chmod 777 "$BASE/misc/restricted.txt"
 
-echo "also wrong"       > "$Y1/docs/executable_doc.txt"
+echo "also wrong permissions"       > "$Y1/docs/executable_doc.txt"
 chmod 755 "$Y1/docs/executable_doc.txt"
 
 # ---------------------------------------------------------------
 # duplicate content in deep structure
 # ---------------------------------------------------------------
 echo "nested duplicate" > "$BASE/misc/config.cfg"
-echo "nested duplicate" > "$Y2/super/deep/dir/structure/config.cfg"
+echo "super nested duplicate" > "$Y2/super/deep/dir/structure/config.cfg"
 
+echo "Done. "
 echo ""
-echo "Done. Test structure:"
-# tree test_data
-ls test_data --recursive
+echo "If you have Tree installed, you can use the following command to see the structure more clearly:"
+echo "tree test_data"
+echo "You can also use:"
+echo "ls test_data --recursive"

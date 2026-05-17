@@ -8,11 +8,15 @@ from typing import Dict, Any, List
 logger = logging.getLogger(__name__)
 
 CONFIG_FILE = Path(__file__).parent / ".clean_files"
+# CONFIG_FILE = Path(__file__).parent.parent / ".clean_files" # paralell to the src/ directory
 
 DEFAULTS = {
     "TARGET_PERMISSIONS":         "rw-r--r--",
     "SUSPICIOUS_CHARS":           [" ", "'", '"', ",", ";", "*", "?", "$", "#", "&", "|", "\\"],
     "SUSPICIOUS_CHAR_SUBSTITUTE": "_",
+    "TEMP_FILE_PATTERNS":         ["*.tmp", "*~", "*.bak"],
+    "KEEP_DUPLICATE_STRATEGY":    "oldest",
+    "KEEP_SAME_NAME_STRATEGY":    "newest",
     "IGNORED_DIRS": [
         ".git",
         "__pycache__",
@@ -43,13 +47,14 @@ def load_settings() -> Dict[str, Any]:
     settings = DEFAULTS.copy()
 
     if not CONFIG_FILE.exists():
+        logger.error(f"[ERROR] Config not found at {CONFIG_FILE}. Using defaults defined in src/settings.py.")
         return settings
 
     try:
         data = _read_config_file()
         for key, value in data.items():
             if key not in DEFAULTS:
-                logger.warning(f"Unknown config key '{key}', skipping.")
+                logger.warning(f"[WARN] Unknown config key '{key}', skipping.")
                 continue
 
             _validate_entry(key, value)
@@ -57,8 +62,7 @@ def load_settings() -> Dict[str, Any]:
         
         logger.info("Config loaded successfully.")
     except Exception as e:
-        logger.error(f"Failed to load config: {e}")
-        logger.info("Falling back to default settings.")
+        logger.error(f"[ERROR] Failed to load config: {e}. Using defaults defined in src/settings.py.")
 
     return settings
 
@@ -84,5 +88,5 @@ def parse_permissions(rwx: str) -> int:
         groups = [sum(mapping[c] for c in rwx[i:i+3]) for i in range(0, 9, 3)]
         return (groups[0] << 6) | (groups[1] << 3) | groups[2]
     except (KeyError, IndexError):
-        logger.error(f"Invalid permission string format: '{rwx}'. Expected 9 characters (e.g., 'rw-r--r--').")
+        logger.error(f"[ERROR] Invalid permission string format: '{rwx}'. Expected 9 characters (e.g., 'rw-r--r--').")
         return 0o644
